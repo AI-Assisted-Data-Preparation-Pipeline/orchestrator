@@ -1,7 +1,4 @@
 spring:
-  profiles:
-    active: ci
-
   datasource:
     url: jdbc:h2:mem:ci-db;MODE=MySQL
     driver-class-name: org.h2.Driver
