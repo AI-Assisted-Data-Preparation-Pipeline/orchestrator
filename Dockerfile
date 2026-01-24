@@ -6,6 +6,7 @@ COPY build.gradle settings.gradle /app/
 COPY src /app/src
 
 # Gradle 캐시 최적화
+RUN chmod +x gradlew
 RUN ./gradlew build -x test --no-daemon
 
 FROM eclipse-temurin:17-jdk-jammy
