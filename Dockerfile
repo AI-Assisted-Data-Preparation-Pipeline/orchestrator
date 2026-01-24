@@ -2,7 +2,7 @@ FROM eclipse-temurin:17-jdk-jammy
 WORKDIR /app
 COPY gradlew /app/
 COPY gradle /app/gradle
-COPY build.gradle.kts settings.gradle.kts /app/
+COPY build.gradle settings.gradle /app/
 COPY src /app/src
 
 # Gradle 캐시 최적화
