@@ -8,12 +8,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 
 @Entity
 @Table(name = "jobs")
 @Getter
+@AllArgsConstructor
 public class Job {
 
     @Id
@@ -24,7 +26,6 @@ public class Job {
     @Column(nullable = false)
     private JobState state;
 
-    @Column(nullable = false)
     private String uploadPath;
 
     @Column(nullable = false)
@@ -35,11 +36,12 @@ public class Job {
 
     protected Job() {}
 
-    public Job(String uploadPath) {
-        this.state = JobState.FILE_UPLOADED;
-        this.uploadPath = uploadPath;
-        this.createdAt = LocalDateTime.now();
+    public static Job instance() {
+        return new Job(null, JobState.CREATED, null, LocalDateTime.now(), null, null);
     }
 
-    // TODO: 상태 전이 메서드
+    public void fileUploaded(String path) {
+        this.uploadPath = path;
+        this.state = JobState.FILE_UPLOADED;
+    }
 }

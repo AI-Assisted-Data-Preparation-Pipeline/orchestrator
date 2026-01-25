@@ -17,3 +17,6 @@ spring:
 logging:
   level:
     root: WARN
+
+file:
+  upload-dir: /volume

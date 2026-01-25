@@ -33,3 +33,6 @@ management:
   endpoint:
     health:
       show-details: always
+
+file:
+  upload-dir: /volume
