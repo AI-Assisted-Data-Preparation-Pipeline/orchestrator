@@ -6,6 +6,7 @@ import orchestrator.exceptions.CriticalException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @Slf4j
 @RestControllerAdvice
@@ -16,6 +17,12 @@ public class GlobalExceptionHandler {
         log.error("Critical Exception", e);
         return ResponseEntity.internalServerError()
             .body(new ErrorResponse(500, "sorry internal server error"));
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException e) {
+        log.warn(e.getMessage());
+        return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

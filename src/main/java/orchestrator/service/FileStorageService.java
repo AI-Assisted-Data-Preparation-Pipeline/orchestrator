@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import orchestrator.exceptions.CriticalException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
+@Slf4j
 public class FileStorageService {
 
     private final String baseUploadDir;
@@ -19,17 +21,13 @@ public class FileStorageService {
     public FileStorageService(@Value("${file.upload-dir}") String baseUploadDir) {
         this.baseUploadDir = baseUploadDir;
 
-        Path baseDir = Paths.get(baseUploadDir);
         try {
-            if (!Files.exists(baseDir)) {
-                Files.createDirectories(baseDir);
-            }
-            if (!Files.isDirectory(baseDir) || !Files.isWritable(baseDir)) {
-                throw new IllegalStateException("Upload base dir is invalid");
-            }
+            Files.createDirectories(Paths.get(this.baseUploadDir));
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to initialize upload directory", e);
+            throw new RuntimeException("Upload dir init failed: " + this.baseUploadDir, e);
         }
+
+        log.info("📂 Upload directory: {}", this.baseUploadDir);
     }
 
     public String storeFile(MultipartFile file, String jobId) {
