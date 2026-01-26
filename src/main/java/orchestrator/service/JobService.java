@@ -3,6 +3,7 @@ package orchestrator.service;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import orchestrator.domain.job.Job;
+import orchestrator.exceptions.BadRequestException;
 import orchestrator.repository.JobRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,14 +20,9 @@ public class JobService {
         return jobRepository.save(instance);
     }
 
-    public Job fileUploaded(UUID jobId, String uploadPath) {
-        Job found = getJob(jobId);
+    public void fileUploaded(UUID jobId, String uploadPath) {
+        Job found = jobRepository.findById(jobId)
+                .orElseThrow(() -> new BadRequestException("job not found: " + jobId));
         found.fileUploaded(uploadPath);
-        return found;
-    }
-
-    private Job getJob(UUID jobId) {
-        return jobRepository.findById(jobId)
-            .orElseThrow(() -> new IllegalArgumentException("Job not found"));
     }
 }

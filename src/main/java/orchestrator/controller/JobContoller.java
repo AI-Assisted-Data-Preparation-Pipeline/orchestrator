@@ -1,8 +1,8 @@
 package orchestrator.controller;
 
 import java.net.URI;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import orchestrator.domain.job.Job;
 import orchestrator.dto.response.JobResponse;
 import orchestrator.service.FileStorageService;
 import orchestrator.service.JobService;
@@ -25,12 +25,9 @@ public class JobContoller {
     public ResponseEntity<JobResponse> uploadFile(
         @RequestParam("file") MultipartFile file
     ) {
-        Job created = jobService.createJob();
-        String filePath = fileStorageService.storeFile(file, created.getId().toString());
-        created.fileUploaded(filePath);
-        String location = "/api/v1/jobs/" + created.getId().toString();
-        return ResponseEntity.created(URI.create(location)).body(
-            JobResponse.from(created)
-        );
+        UUID jobId = jobService.createJob().getId();
+        String filePath = fileStorageService.storeFile(file, jobId.toString());
+        jobService.fileUploaded(jobId, filePath);
+        return ResponseEntity.created(URI.create("")).build();
     }
 }

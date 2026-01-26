@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
-import orchestrator.exceptions.CriticalException;
+import orchestrator.exceptions.InternalServerException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -24,7 +24,7 @@ public class FileStorageService {
         try {
             Files.createDirectories(Paths.get(this.baseUploadDir));
         } catch (IOException e) {
-            throw new RuntimeException("Upload dir init failed: " + this.baseUploadDir, e);
+            throw new InternalServerException("Upload dir init failed: " + this.baseUploadDir, e);
         }
 
         log.info("📂 Upload directory: {}", this.baseUploadDir);
@@ -46,7 +46,7 @@ public class FileStorageService {
 
             return targetLocation.toAbsolutePath().toString();
         } catch (IOException e) {
-            throw new CriticalException("Failed to store file", e);
+            throw new InternalServerException("Failed to store file", e);
         }
     }
 }
