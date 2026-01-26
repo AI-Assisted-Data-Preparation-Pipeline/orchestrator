@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### dynamic files in volume ###
+volume/*
+!volume/.empty
