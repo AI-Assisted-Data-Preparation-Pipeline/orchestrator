@@ -48,4 +48,7 @@ class AppServiceTest {
         assertThat(job.getFileName()).isNotBlank();
     }
 
+    @Test
+    void 프롬프트를_제출하면_코드_생성후_
+
 }

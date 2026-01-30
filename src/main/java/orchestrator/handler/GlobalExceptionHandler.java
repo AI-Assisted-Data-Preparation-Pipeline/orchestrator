@@ -6,6 +6,7 @@ import orchestrator.exceptions.BadRequestException;
 import orchestrator.exceptions.ExternalServerException;
 import orchestrator.exceptions.InternalServerException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -45,6 +46,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException e) {
         log.warn("Validation failed: {}", e.getMessage());
+        return ResponseEntity.badRequest()
+            .body(new ErrorResponse(400, e.getMessage()));
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        log.warn(e.getMessage());
         return ResponseEntity.badRequest()
             .body(new ErrorResponse(400, e.getMessage()));
     }

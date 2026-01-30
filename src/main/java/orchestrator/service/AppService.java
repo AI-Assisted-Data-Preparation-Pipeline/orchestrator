@@ -35,5 +35,4 @@ public class AppService {
         jobService.setGeneratedCode(jobId, generatedCode);
         return new SubmitPromptResponse(jobId, generatedCode);
     }
-
 }

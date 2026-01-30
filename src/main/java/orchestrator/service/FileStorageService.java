@@ -74,7 +74,6 @@ public class FileStorageService {
             log.info("Python file created: {}", pyFilePath);
 
         } catch (IOException e) {
-            log.error("Failed to create python file. jobId={}", jobId, e);
             throw new InternalServerException("파이썬 파일 생성 실패", e);
         }
     }

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import orchestrator.exceptions.InternalServerException;
 import org.hibernate.annotations.UuidGenerator;
 
 @Entity
@@ -32,7 +32,6 @@ public class Job {
 
     private String fileName;
 
-    @Setter
     private String generatedCode;
 
     @Column(nullable = false)
@@ -48,7 +47,20 @@ public class Job {
     }
 
     public void fileUploaded(String fileName) {
+        assertState(JobState.CREATED);
         this.fileName = fileName;
         this.state = JobState.FILE_UPLOADED;
+    }
+
+    public void setGeneratedCode(String code) {
+        assertState(JobState.FILE_UPLOADED);
+        this.generatedCode = code;
+        this.state = JobState.CODE_GENERATED;
+    }
+
+    private void assertState(JobState expected) {
+        if (this.state != expected) {
+            throw new InternalServerException("비정상 상태전환. expected=" + expected + ", actual=" + state);
+        }
     }
 }
