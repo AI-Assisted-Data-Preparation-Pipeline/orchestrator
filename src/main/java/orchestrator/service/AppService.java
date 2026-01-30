@@ -8,10 +8,12 @@ import orchestrator.domain.job.Job;
 import orchestrator.dto.response.SubmitPromptResponse;
 import orchestrator.dto.response.UploadResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AppService {
 
     private final FileStorageService fileStorageService;
