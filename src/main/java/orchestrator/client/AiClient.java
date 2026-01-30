@@ -39,6 +39,6 @@ public class AiClient {
             .retrieve()
             .bodyToMono(GenerateCodeResponse.class)
             .block();
-        return response.getGeneratedCode();
+        return response.getCode();
     }
 }

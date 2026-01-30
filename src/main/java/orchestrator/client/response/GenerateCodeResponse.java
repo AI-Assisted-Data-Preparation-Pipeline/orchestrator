@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class GenerateCodeResponse {
 
-    private String generatedCode;
+    private String code;
     private String explain;
 }

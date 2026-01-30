@@ -8,6 +8,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class GenerateCodeRequest {
 
-    private List<String> fileNames;
-    private String prompt;
+    private List<String> file_names;
+    private String user_input;
 }
