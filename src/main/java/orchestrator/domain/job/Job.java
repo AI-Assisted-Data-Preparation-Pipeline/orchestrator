@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
 @Entity
@@ -29,7 +30,10 @@ public class Job {
     @Column(nullable = false)
     private JobState state;
 
-    private String uploadPath;
+    private String fileName;
+
+    @Setter
+    private String generatedCode;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -40,11 +44,11 @@ public class Job {
     protected Job() {}
 
     public static Job instance() {
-        return new Job(null, JobState.CREATED, null, LocalDateTime.now(), null, null);
+        return new Job(null, JobState.CREATED, null, null, LocalDateTime.now(), null, null);
     }
 
-    public void fileUploaded(String path) {
-        this.uploadPath = path;
+    public void fileUploaded(String fileName) {
+        this.fileName = fileName;
         this.state = JobState.FILE_UPLOADED;
     }
 }

@@ -20,9 +20,21 @@ public class JobService {
         return jobRepository.save(instance);
     }
 
-    public void fileUploaded(UUID jobId, String uploadPath) {
+    public void fileUploaded(UUID jobId, String fileName) {
         Job found = jobRepository.findById(jobId)
                 .orElseThrow(() -> new BadRequestException("job not found: " + jobId));
-        found.fileUploaded(uploadPath);
+        found.fileUploaded(fileName);
+    }
+
+    public String getFileName(UUID jobId) {
+        Job found = jobRepository.findById(jobId)
+            .orElseThrow(() -> new BadRequestException("job not found: " + jobId));
+        return found.getFileName();
+    }
+
+    public void setGeneratedCode(UUID jobId, String generatedCode) {
+        Job found = jobRepository.findById(jobId)
+            .orElseThrow(() -> new BadRequestException("job not found: " + jobId));
+        found.setGeneratedCode(generatedCode);
     }
 }

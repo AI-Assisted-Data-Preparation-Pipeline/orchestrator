@@ -45,7 +45,7 @@ class AppServiceTest {
 
         Job job = jobRepository.findById(response.getJobId()).orElseThrow();
         assertThat(job.getState()).isEqualTo(JobState.FILE_UPLOADED);
-        assertThat(job.getUploadPath()).isNotBlank();
+        assertThat(job.getFileName()).isNotBlank();
     }
 
 }
