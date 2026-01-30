@@ -1,10 +1,23 @@
 import { initUpload } from './feature/upload/upload.js';
+import { initPrompt } from './feature/prompt/submit_prompt.js';
+import { JobState, store } from './store.js'
+
 
 loadView('upload', () => {
-  initUpload((result) => {
-    loadView('prompt_input');
+  initUpload(() => {
+    goNextStep();
   });
 });
+
+function goNextStep() {
+  if (store.jobState === JobState.UPLOADED) {
+    loadView('prompt', () => {
+      initPrompt(() => {
+        goNextStep();
+      });
+    });
+  }
+}
 
 function loadView(view, onLoaded) {
   const app = document.getElementById('app');
@@ -18,7 +31,13 @@ function loadView(view, onLoaded) {
       });
   }
 
-  if (view === 'prompt_input') {
-    alert('프롬프트 입력 부분 개발준비 완료');
+  if (view === 'prompt') {
+    fetch('./feature/prompt/submit_prompt.html')
+      .then(res => res.text())
+      .then(html => {
+        app.innerHTML = html;
+        initPrompt();
+        onLoaded && onLoaded();
+      });
   }
 }

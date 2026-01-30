@@ -37,3 +37,6 @@ management:
 
 file:
   upload-dir: ${WORKER_VOLUME_ABSOLUTE_PATH}
+
+ai-engine:
+  base-url: http://ai-engine:8000

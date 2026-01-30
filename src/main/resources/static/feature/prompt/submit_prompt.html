@@ -1,0 +1,37 @@
+<div class="prompt-container">
+  <h2>전처리 프롬프트 입력</h2>
+
+  <textarea
+      id="promptInput"
+      placeholder="예: 컬럼 A는 날짜 형식으로 변환하고..."
+      rows="8"
+      style="width:100%;"
+  ></textarea>
+
+  <br /><br />
+
+  <button id="submitPromptBtn">코드 생성</button>
+
+  <div id="promptStatus" style="margin-top:12px;"></div>
+
+  <hr />
+
+  <h3>생성된 코드 미리보기</h3>
+  <pre
+      id="generatedCodePreview"
+      style="
+      background:#111;
+      color:#00ff88;
+      padding:12px;
+      border-radius:6px;
+      min-height:150px;
+      overflow:auto;
+    "
+  ></pre>
+
+  <br />
+
+  <button disabled id="runExecutionBtn">
+    실행하기
+  </button>
+</div>
