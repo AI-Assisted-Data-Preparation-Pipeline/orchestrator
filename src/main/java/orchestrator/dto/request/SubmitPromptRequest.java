@@ -7,6 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class SubmitPromptRequest {
 
-    private String jobId;
     private String prompt;
 }

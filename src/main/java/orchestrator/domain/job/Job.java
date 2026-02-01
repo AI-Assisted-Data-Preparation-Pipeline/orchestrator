@@ -97,6 +97,14 @@ public class Job {
         this.state = JobState.SUCCESS;
     }
 
+    public boolean isFinished() {
+        return state == JobState.SUCCESS || state == JobState.FAILED;
+    }
+
+    public boolean isSucceeded() {
+        return state == JobState.SUCCESS;
+    }
+
     private void assertState(JobState expected) {
         if (this.state != expected) {
             throw new InternalServerException("비정상 상태전환. expected=" + expected + ", actual=" + state);

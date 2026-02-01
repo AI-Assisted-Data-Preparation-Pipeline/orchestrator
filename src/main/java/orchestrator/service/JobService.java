@@ -64,4 +64,15 @@ public class JobService {
             .orElseThrow(() -> new InternalServerException("Tried to access Non-Exist Job: " + jobId));
         found.executeSuccess(outputPath);
     }
+
+    protected Job getJob(UUID jobId) {
+        return jobRepository.findById(jobId)
+            .orElseThrow(() -> new BadRequestException("job not found: " + jobId));
+    }
+
+    protected String getOutputPath(UUID jobId) {
+        Job found = jobRepository.findById(jobId)
+            .orElseThrow(() -> new BadRequestException("job not found: " + jobId));
+        return found.getOutputPath();
+    }
 }
