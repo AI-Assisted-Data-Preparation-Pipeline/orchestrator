@@ -29,7 +29,10 @@ logging:
     root: INFO
 
 file:
-  upload-dir: ${user.dir}/volume
+  volume-path: ${user.dir}/volume
+
+docker:
+  image: python:3.11-slim
 
 ai-engine:
   base-url: http://localhost:8000

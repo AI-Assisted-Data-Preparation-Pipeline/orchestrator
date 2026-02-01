@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Objects;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import orchestrator.exceptions.InternalServerException;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +21,7 @@ public class FileStorageService {
 
     private final String baseUploadDir;
 
-    public FileStorageService(@Value("${file.upload-dir}") String baseUploadDir) {
+    public FileStorageService(@Value("${file.volume-path}") String baseUploadDir) {
         this.baseUploadDir = baseUploadDir;
 
         try {
@@ -75,6 +76,24 @@ public class FileStorageService {
 
         } catch (IOException e) {
             throw new InternalServerException("파이썬 파일 생성 실패", e);
+        }
+    }
+
+    public String getOutputFilePath(String jobId) {
+        Path outputDir = Paths.get(baseUploadDir, jobId, "output");
+
+        if (!Files.exists(outputDir) || !Files.isDirectory(outputDir)) {
+            return null;
+        }
+
+        try (Stream<Path> files = Files.list(outputDir)) {
+            return files
+                .filter(Files::isRegularFile)
+                .findFirst()
+                .map(Path::toString)
+                .orElse(null);
+        } catch (IOException e) {
+            throw new InternalServerException("Failed to read output directory: " + outputDir, e);
         }
     }
 }

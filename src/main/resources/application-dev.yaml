@@ -36,7 +36,10 @@ management:
       show-details: always
 
 file:
-  upload-dir: ${WORKER_VOLUME_ABSOLUTE_PATH}
+  volume-path: ${WORKER_VOLUME_ABSOLUTE_PATH}
+
+docker:
+  image: worker:latest
 
 ai-engine:
   base-url: http://ai-engine:8000
