@@ -27,6 +27,7 @@ spring:
 logging:
   level:
     root: INFO
+    orchestrator.service: DEBUG
 
 file:
   volume-path: ${user.dir}/volume

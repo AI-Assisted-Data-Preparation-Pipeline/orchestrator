@@ -21,9 +21,10 @@ server:
 
 logging:
   level:
-    root: INFO
+    root: DEBUG
     org.springframework.web: INFO
     org.hibernate.SQL: DEBUG
+    orchestrator.service: DEBUG
 
 # actuator
 management:

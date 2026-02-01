@@ -10,6 +10,7 @@ import orchestrator.domain.job.Job;
 @AllArgsConstructor
 public class JobResponse {
 
+    // {id, state, log, outputUrl, startedAt, finishedAt}
     private final String id;
     private final String state;
     private final String log;

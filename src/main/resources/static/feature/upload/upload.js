@@ -3,7 +3,7 @@ import { API } from '../../api/endpoints.js';
 import { store, JobState } from '../../store.js'
 
 export function uploadFile(formData) {
-  return apiRequest(API.UPLOAD_FILE, {
+  return apiRequest(API.UPLOAD_FILE(), {
     method: 'POST',
     body: formData,
   });

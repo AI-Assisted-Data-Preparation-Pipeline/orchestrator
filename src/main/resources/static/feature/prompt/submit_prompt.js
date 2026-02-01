@@ -1,9 +1,10 @@
 import { store, JobState } from '../../store.js';
 import { API } from '../../api/endpoints.js';
 import { apiRequest } from '../../api/client.js';
+import { goNextStep } from '../../app.js';
 
-function submitPrompt(data) {
-  return apiRequest(API.SUBMIT_PROMPT, {
+function submitPrompt(jobId, data) {
+  return apiRequest(API.SUBMIT_PROMPT(jobId), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -37,10 +38,10 @@ export function initPrompt() {
       status.innerText = '코드 생성 중...';
       preview.innerText = '';
 
-      const response = await submitPrompt({
-        jobId: store.jobId,
-        prompt: prompt,
-      })
+      const response = await submitPrompt(
+        store.jobId,
+        {prompt: prompt},
+      )
 
       // response: { jobId, generatedCode }
       store.jobState = JobState.CODE_GENERATED;
@@ -64,9 +65,8 @@ export function initPrompt() {
       return;
     }
 
-    console.log('execution feature로 이동 예정', {
-      jobId: store.jobId,
-    });
+    store.jobState = JobState.EXECUTE_READY
+    goNextStep();
   });
 
 }

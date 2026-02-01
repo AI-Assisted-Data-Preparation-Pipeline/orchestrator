@@ -43,27 +43,27 @@ public class AppController {
 
     @PostMapping("/{jobId}/submit-prompt")
     public ResponseEntity<SubmitPromptResponse> submitPrompt(
-        @PathVariable UUID jobId,
+        @PathVariable String jobId,
         @RequestBody SubmitPromptRequest request
     ) {
-        SubmitPromptResponse response = appService.generateCode(jobId, request.getPrompt());
+        SubmitPromptResponse response = appService.generateCode(UUID.fromString(jobId), request.getPrompt());
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{jobId}/execute")
-    public ResponseEntity<Void> executeJob(@PathVariable UUID jobId) {
-        workerService.runWorkerContainer(jobId);
+    public ResponseEntity<Void> executeJob(@PathVariable String jobId) {
+        workerService.runWorkerContainer(UUID.fromString(jobId));
         return ResponseEntity.accepted().build();
     }
 
     @GetMapping("/{jobId}")
-    public ResponseEntity<JobResponse> viewJobDetail(@PathVariable UUID jobId) {
-        return ResponseEntity.ok(appService.getJobResponse(jobId));
+    public ResponseEntity<JobResponse> viewJobDetail(@PathVariable String jobId) {
+        return ResponseEntity.ok(appService.getJobResponse(UUID.fromString(jobId)));
     }
 
     @GetMapping("/{jobId}/output")
-    public ResponseEntity<Resource> downloadOutput(@PathVariable UUID jobId) {
-        File outputFile = appService.getOutputFile(jobId);
+    public ResponseEntity<Resource> downloadOutput(@PathVariable String jobId) {
+        File outputFile = appService.getOutputFile(UUID.fromString(jobId));
         Resource resource = new FileSystemResource(outputFile);
 
         return ResponseEntity.ok()
