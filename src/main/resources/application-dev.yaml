@@ -21,9 +21,10 @@ server:
 
 logging:
   level:
-    root: INFO
+    root: DEBUG
     org.springframework.web: INFO
     org.hibernate.SQL: DEBUG
+    orchestrator.service: DEBUG
 
 # actuator
 management:
@@ -36,7 +37,10 @@ management:
       show-details: always
 
 file:
-  upload-dir: ${WORKER_VOLUME_ABSOLUTE_PATH}
+  volume-path: ${WORKER_VOLUME_ABSOLUTE_PATH}
+
+docker:
+  image: worker:latest
 
 ai-engine:
   base-url: http://ai-engine:8000

@@ -31,6 +31,7 @@ public class Job {
     @Column(nullable = false)
     private JobState state;
 
+    @Column
     private String fileName;
 
     @Lob
@@ -40,13 +41,24 @@ public class Job {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    // Execution
+    @Lob
+    @Column(nullable = false)
+    private String log;
+
+    @Column
+    private String outputPath;
+
+    @Column
     private LocalDateTime startedAt;
+
+    @Column
     private LocalDateTime finishedAt;
 
     protected Job() {}
 
     public static Job instance() {
-        return new Job(null, JobState.CREATED, null, null, LocalDateTime.now(), null, null);
+        return new Job(null, JobState.CREATED, null, null, LocalDateTime.now(), "", null, null, null);
     }
 
     public void fileUploaded(String fileName) {
@@ -59,6 +71,38 @@ public class Job {
         assertState(JobState.FILE_UPLOADED);
         this.generatedCode = code;
         this.state = JobState.CODE_GENERATED;
+    }
+
+    public void startExecute() {
+        assertState(JobState.CODE_GENERATED);
+        this.state = JobState.RUNNING;
+        this.startedAt = LocalDateTime.now();
+    }
+
+    public void addExecutionLog(String line) {
+        assertState(JobState.RUNNING);
+        this.log += "\n" + line;
+    }
+
+    public void executeSuccess(String outputPath) {
+        assertState(JobState.RUNNING);
+        this.outputPath = outputPath;
+        this.finishedAt = LocalDateTime.now();
+        this.state = JobState.SUCCESS;
+    }
+
+    public void executeFailed() {
+        assertState(JobState.RUNNING);
+        this.finishedAt = LocalDateTime.now();
+        this.state = JobState.SUCCESS;
+    }
+
+    public boolean isFinished() {
+        return state == JobState.SUCCESS || state == JobState.FAILED;
+    }
+
+    public boolean isSucceeded() {
+        return state == JobState.SUCCESS;
     }
 
     private void assertState(JobState expected) {

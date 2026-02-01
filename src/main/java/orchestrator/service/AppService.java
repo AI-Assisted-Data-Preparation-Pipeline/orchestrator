@@ -1,12 +1,16 @@
 package orchestrator.service;
 
+import java.io.File;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import orchestrator.client.AiClient;
 import orchestrator.domain.job.Job;
+import orchestrator.dto.response.JobResponse;
 import orchestrator.dto.response.SubmitPromptResponse;
 import orchestrator.dto.response.UploadResponse;
+import orchestrator.exceptions.BadRequestException;
+import orchestrator.exceptions.InternalServerException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,5 +40,29 @@ public class AppService {
 
         jobService.setGeneratedCode(jobId, generatedCode);
         return new SubmitPromptResponse(jobId, generatedCode);
+    }
+
+    @Transactional(readOnly = true)
+    public JobResponse getJobResponse(UUID jobId) {
+        return JobResponse.from(jobService.getJob(jobId));
+    }
+
+    public File getOutputFile(UUID jobId) {
+        Job job = jobService.getJob(jobId);
+
+        if (!job.isFinished()) {
+            throw new BadRequestException("Job is not finished yet.");
+        }
+        if (!job.isSucceeded()) {
+            throw new BadRequestException("Job did not produce output.");
+        }
+
+        File file = fileStorageService.getFile(job.getOutputPath());
+
+        if (file == null) {
+            throw new InternalServerException("output 파일이 존재하지 않습니다. path: " + job.getOutputPath());
+        }
+
+        return file;
     }
 }
