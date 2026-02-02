@@ -11,6 +11,12 @@ RUN ./gradlew build -x test --no-daemon
 
 FROM eclipse-temurin:17-jdk-jammy
 WORKDIR /app
+
+# Docker cli 설치
+RUN apt-get update && \
+    apt-get install -y docker.io && \
+    rm -rf /var/lib/apt/lists/*
+
 COPY --from=0 /app/build/libs/*.jar app.jar
 
 EXPOSE 8080
