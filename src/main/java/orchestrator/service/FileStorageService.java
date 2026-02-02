@@ -64,10 +64,13 @@ public class FileStorageService {
                 Files.createDirectories(jobDir);
             }
 
-            // 2. 파일 생성 + 내용 쓰기 (덮어쓰기)
+            // 2. 개행 처리
+            String normalizedCode = normalizeNewLines(code);
+
+            // 3. 파일 생성 + 내용 쓰기 (덮어쓰기)
             Files.writeString(
                 pyFilePath,
-                code,
+                normalizedCode,
                 StandardCharsets.UTF_8,
                 StandardOpenOption.CREATE,
                 StandardOpenOption.TRUNCATE_EXISTING
@@ -79,6 +82,20 @@ public class FileStorageService {
             throw new InternalServerException("파이썬 파일 생성 실패", e);
         }
     }
+
+    private String normalizeNewLines(String code) {
+        if (code == null) {
+            return "";
+        }
+
+        return code
+            // JSON / 프롬프트 결과에서 흔한 케이스
+            .replace("\\n", "\n")
+            // Windows 개행 제거
+            .replace("\r\n", "\n")
+            .replace("\r", "\n");
+    }
+
 
     public String getOutputFilePath(String jobId) {
         Path outputDir = Paths.get(baseUploadDir, jobId, "output");
