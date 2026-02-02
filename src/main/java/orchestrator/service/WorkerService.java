@@ -41,8 +41,9 @@ public class WorkerService {
             "--rm",
             "--name", "worker-" + jobId,
             "-v", jobDir + ":/workspace",
+            "-w", "/workspace",
             dockerImage,
-            "python", "/workspace/main.py"
+            "python", "main.py"
         );
 
         log.info("Running worker container. jobId={}, command={}", jobId, command);
