@@ -45,7 +45,7 @@ public class WorkerService {
             "python", "/workspace/main.py"
         );
 
-        log.info("Running worker container. jobId={}, command={}", jobId, command);
+        log.debug("Running worker container. jobId={}, command={}", jobId, command);
         jobService.startExecution(jobId);
 
         ProcessBuilder pb = new ProcessBuilder(command);
@@ -53,7 +53,7 @@ public class WorkerService {
 
         try {
             Process process = pb.start();
-            log.info("Docker process started. pid={}", process.pid());
+            log.debug("Docker process started. pid={}", process.pid());
 
             try (BufferedReader reader =
                 new BufferedReader(new InputStreamReader(process.getInputStream()))) {
@@ -62,7 +62,7 @@ public class WorkerService {
                 List<String> buffer = new ArrayList<>();
 
                 while ((line = reader.readLine()) != null) {
-                    log.info("[worker-{}] {}", jobId, line);
+                    log.debug("[worker-{}] {}", jobId, line);
                     buffer.add(line);
                     if (buffer.size() >= 10) {
                         jobService.addExecutionLogs(jobId, buffer);
@@ -75,7 +75,7 @@ public class WorkerService {
             }
 
             int exitCode = process.waitFor();
-            log.info("Worker container exited. jobId={}, exitCode={}", jobId, exitCode);
+            log.debug("Worker container exited. jobId={}, exitCode={}", jobId, exitCode);
 
             if (exitCode != 0) {
                 log.error("Worker container failed. jobId={}", jobId);
