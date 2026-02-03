@@ -1,4 +1,4 @@
-package orchestrator.dto.request;
+package orchestrator.common.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

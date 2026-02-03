@@ -1,10 +1,10 @@
-package orchestrator.handler;
+package orchestrator.common.handler;
 
 import lombok.extern.slf4j.Slf4j;
-import orchestrator.dto.response.ErrorResponse;
-import orchestrator.exceptions.BadRequestException;
-import orchestrator.exceptions.ExternalServerException;
-import orchestrator.exceptions.InternalServerException;
+import orchestrator.common.dto.response.ErrorResponse;
+import orchestrator.common.exceptions.BadRequestException;
+import orchestrator.common.exceptions.ExternalServerException;
+import orchestrator.common.exceptions.InternalServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;

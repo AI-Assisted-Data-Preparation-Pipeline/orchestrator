@@ -1,4 +1,4 @@
-package orchestrator.dto.response;
+package orchestrator.common.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

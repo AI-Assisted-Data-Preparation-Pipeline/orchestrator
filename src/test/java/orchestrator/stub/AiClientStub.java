@@ -1,7 +1,7 @@
 package orchestrator.stub;
 
 import java.util.List;
-import orchestrator.client.AiClient;
+import orchestrator.infra.client.AiClient;
 
 public class AiClientStub extends AiClient {
 

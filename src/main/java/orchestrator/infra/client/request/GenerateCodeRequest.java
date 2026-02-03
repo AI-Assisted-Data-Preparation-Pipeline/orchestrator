@@ -1,4 +1,4 @@
-package orchestrator.client.request;
+package orchestrator.infra.client.request;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

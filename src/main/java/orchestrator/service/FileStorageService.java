@@ -10,7 +10,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
-import orchestrator.exceptions.InternalServerException;
+import orchestrator.common.exceptions.InternalServerException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

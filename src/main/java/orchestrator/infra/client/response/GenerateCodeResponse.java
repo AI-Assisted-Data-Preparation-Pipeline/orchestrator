@@ -1,4 +1,4 @@
-package orchestrator.client.response;
+package orchestrator.infra.client.response;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

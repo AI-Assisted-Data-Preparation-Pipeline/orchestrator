@@ -4,11 +4,11 @@ package orchestrator.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.persistence.EntityManager;
-import orchestrator.client.AiClient;
+import orchestrator.common.dto.response.SubmitPromptResponse;
+import orchestrator.common.dto.response.UploadResponse;
 import orchestrator.domain.job.Job;
 import orchestrator.domain.job.JobState;
-import orchestrator.dto.response.SubmitPromptResponse;
-import orchestrator.dto.response.UploadResponse;
+import orchestrator.infra.client.AiClient;
 import orchestrator.repository.JobRepository;
 import orchestrator.stub.AiClientStub;
 import org.junit.jupiter.api.Test;

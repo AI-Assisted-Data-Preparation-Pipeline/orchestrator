@@ -1,4 +1,4 @@
-package orchestrator.client;
+package orchestrator.infra.client;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import orchestrator.client.request.GenerateCodeRequest;
-import orchestrator.client.response.GenerateCodeResponse;
-import orchestrator.exceptions.ExternalServerException;
-import orchestrator.exceptions.InternalServerException;
+import orchestrator.common.exceptions.ExternalServerException;
+import orchestrator.common.exceptions.InternalServerException;
+import orchestrator.infra.client.request.GenerateCodeRequest;
+import orchestrator.infra.client.response.GenerateCodeResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
