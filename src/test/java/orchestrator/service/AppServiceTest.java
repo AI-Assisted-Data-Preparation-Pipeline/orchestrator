@@ -4,11 +4,12 @@ package orchestrator.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.persistence.EntityManager;
+import orchestrator.common.dto.response.JobResponse;
 import orchestrator.common.dto.response.SubmitPromptResponse;
 import orchestrator.common.dto.response.UploadResponse;
 import orchestrator.domain.job.Job;
 import orchestrator.domain.job.JobState;
-import orchestrator.infra.client.AiClient;
+import orchestrator.infra.client.ai_engine.AiClient;
 import orchestrator.repository.JobRepository;
 import orchestrator.stub.AiClientStub;
 import org.junit.jupiter.api.Test;
@@ -80,6 +81,36 @@ class AppServiceTest {
         assertThat(found.getState()).isEqualTo(JobState.CODE_GENERATED);
     }
 
+    @Test
+    void 실행에_성공한_job_조회시_결과정보가_반환된다() {
+        // given
+        Job sample = succeedJobSample();
+
+        // when
+        JobResponse response = appService.getJobResponse(sample.getId());
+
+        // then
+        assertThat(response.getId()).isEqualTo(sample.getId().toString());
+        assertThat(response.getState()).isEqualTo(JobState.SUCCESS.toString());
+        assertThat(response.getOutputUrl().toString())  // download url
+            .contains(sample.getId().toString())
+            .contains("/output");
+    }
+
+//    @Test
+//    void output_요청시_file이_반환된다() {
+//        // given (fileStorageService도 모킹 필요)
+//        Job sample = succeedJobSample();
+//
+//        // when
+//        File file = appService.getOutputFile(sample.getId());
+//
+//        // then
+//        assertThat(file).isNotNull();
+//        assertThat(file.exists()).isTrue();
+//        assertThat(file.getName()).isNotBlank();
+//    }
+
     private Job createdJobSample() {
         return jobRepository.save(Job.instance());
     }
@@ -87,6 +118,16 @@ class AppServiceTest {
     private Job fileUploadedJobSample() {
         Job created = jobRepository.save(Job.instance());
         created.fileUploaded("test-file.txt");
+        return created;
+    }
+
+    private Job succeedJobSample() {
+        Job created = jobRepository.save(Job.instance());
+        created.fileUploaded("test-file.txt");
+        created.setGeneratedCode("test-generated-code");
+        created.startExecute();
+        created.addExecutionLog("test-execute-log");
+        created.executeSuccess("test-output-path");
         return created;
     }
 
