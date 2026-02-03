@@ -52,7 +52,7 @@ public class AppController {
 
     @PostMapping("/{jobId}/execute")
     public ResponseEntity<Void> executeJob(@PathVariable String jobId) {
-        workerService.runWorkerContainer(UUID.fromString(jobId));
+        workerService.runWorkerContainer(UUID.fromString(jobId)); // async
         return ResponseEntity.accepted().build();
     }
 
