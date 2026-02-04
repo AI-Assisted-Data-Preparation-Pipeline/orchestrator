@@ -10,7 +10,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
-import orchestrator.exceptions.InternalServerException;
+import orchestrator.common.exceptions.InternalServerException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -47,6 +47,8 @@ public class FileStorageService {
             // 파일 저장
             Path targetLocation = jobDir.resolve(fileName);
             file.transferTo(targetLocation.toFile());
+
+            log.info("Stored multipart file: {}", targetLocation);
 
             return targetLocation.toAbsolutePath().toString();
         } catch (IOException e) {

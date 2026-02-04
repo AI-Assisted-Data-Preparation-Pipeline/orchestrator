@@ -1,8 +1,12 @@
-package orchestrator.exceptions;
+package orchestrator.common.exceptions;
 
 public class ExternalServerException extends AppException {
 
     public ExternalServerException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public ExternalServerException(String message) {
+        super(message);
     }
 }

@@ -1,4 +1,4 @@
-package orchestrator.exceptions;
+package orchestrator.common.exceptions;
 
 public class BadRequestException extends AppException {
 

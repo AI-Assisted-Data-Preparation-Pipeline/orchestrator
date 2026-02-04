@@ -1,22 +1,40 @@
-<!-- feature/execute/execute.html -->
 <section id="execute-view">
   <h2>🚀 Job Execution</h2>
 
-  <div class="job-meta">
-    <span>Job ID:</span>
-    <span id="job-id"></span>
+  <div class="job-card">
+    <div class="meta-row">
+      <span class="label">Job ID</span>
+      <span id="job-id">-</span>
+    </div>
+
+    <div class="meta-row">
+      <span class="label">Status</span>
+      <span id="job-state">RUNNING</span>
+    </div>
+
+    <div class="meta-row">
+      <span class="label">Started</span>
+      <span id="started-at">-</span>
+    </div>
+
+    <div class="meta-row">
+      <span class="label">Finished</span>
+      <span id="finished-at">-</span>
+    </div>
+
+    <div class="meta-row">
+      <span class="label">Duration</span>
+      <span id="duration">-</span>
+    </div>
   </div>
 
-  <div class="job-state">
-    <strong>Status:</strong>
-    <span id="job-state">RUNNING</span>
-  </div>
+  <h3>Execution Log</h3>
 
   <pre class="log-box" id="execution-log">
 실행 로그를 기다리는 중...
   </pre>
 
-  <div id="execute-actions" style="display: none;">
+  <div class="action-area" id="execute-actions" style="display: none;">
     <a download href="#" id="download-btn">
       ⬇️ 결과 다운로드
     </a>

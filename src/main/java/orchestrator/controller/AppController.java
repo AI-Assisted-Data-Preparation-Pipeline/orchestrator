@@ -4,10 +4,10 @@ import java.io.File;
 import java.net.URI;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import orchestrator.dto.request.SubmitPromptRequest;
-import orchestrator.dto.response.JobResponse;
-import orchestrator.dto.response.SubmitPromptResponse;
-import orchestrator.dto.response.UploadResponse;
+import orchestrator.common.dto.request.SubmitPromptRequest;
+import orchestrator.common.dto.response.JobResponse;
+import orchestrator.common.dto.response.SubmitPromptResponse;
+import orchestrator.common.dto.response.UploadResponse;
 import orchestrator.service.AppService;
 import orchestrator.service.WorkerService;
 import org.springframework.core.io.FileSystemResource;
@@ -52,7 +52,7 @@ public class AppController {
 
     @PostMapping("/{jobId}/execute")
     public ResponseEntity<Void> executeJob(@PathVariable String jobId) {
-        workerService.runWorkerContainer(UUID.fromString(jobId));
+        workerService.runWorkerContainer(UUID.fromString(jobId)); // async
         return ResponseEntity.accepted().build();
     }
 
