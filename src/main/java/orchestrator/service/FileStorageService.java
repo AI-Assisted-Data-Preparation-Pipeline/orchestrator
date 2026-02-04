@@ -48,6 +48,8 @@ public class FileStorageService {
             Path targetLocation = jobDir.resolve(fileName);
             file.transferTo(targetLocation.toFile());
 
+            log.info("Stored multipart file: {}", targetLocation);
+
             return targetLocation.toAbsolutePath().toString();
         } catch (IOException e) {
             throw new InternalServerException("Failed to store file", e);

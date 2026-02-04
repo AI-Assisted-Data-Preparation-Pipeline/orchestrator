@@ -94,7 +94,7 @@ public class Job {
     public void executeFailed() {
         assertState(JobState.RUNNING);
         this.finishedAt = LocalDateTime.now();
-        this.state = JobState.SUCCESS;
+        this.state = JobState.FAILED;
     }
 
     public boolean isFinished() {

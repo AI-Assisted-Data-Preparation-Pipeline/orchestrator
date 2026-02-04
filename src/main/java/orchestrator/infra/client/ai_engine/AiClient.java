@@ -1,4 +1,4 @@
-package orchestrator.infra.client;
+package orchestrator.infra.client.ai_engine;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import orchestrator.common.exceptions.ExternalServerException;
 import orchestrator.common.exceptions.InternalServerException;
-import orchestrator.infra.client.request.GenerateCodeRequest;
-import orchestrator.infra.client.response.GenerateCodeResponse;
+import orchestrator.infra.client.ai_engine.request.GenerateCodeRequest;
+import orchestrator.infra.client.ai_engine.response.GenerateCodeResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;

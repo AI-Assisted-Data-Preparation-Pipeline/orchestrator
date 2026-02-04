@@ -1,3 +1,5 @@
+# dev properties
+
 spring:
   application:
     name: orchestrator
@@ -11,19 +13,17 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create  # update, validate
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-
-server:
-  port: 8080
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
 
 logging:
   level:
     root: INFO
-    org.springframework.web: INFO
-    org.hibernate.SQL: INFO
+    org.springframework: WARN
+    org.hibernate: WARN
+    orchestrator: DEBUG
 
 # actuator
 management:

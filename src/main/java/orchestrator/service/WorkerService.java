@@ -58,7 +58,7 @@ public class WorkerService {
 
         try {
             process = pb.start();
-            log.info("Docker process started. pid={}", process.pid());
+            log.debug("[WORKER_START] jobId={}, pid={}", jobId, process.pid());
 
             // worker 실행 로그 처리
             try (BufferedReader reader =
@@ -66,7 +66,7 @@ public class WorkerService {
                 String line;
                 List<String> buffer = new ArrayList<>();
                 while ((line = reader.readLine()) != null) {
-                    log.info("[worker-{}] {}", jobId, line);
+                    log.debug("[WORKER_LOG][worker-{}] {}", jobId, line);
                     buffer.add(line);
                     if (buffer.size() >= 10) {
                         jobService.addExecutionLogs(jobId, buffer);
@@ -78,16 +78,16 @@ public class WorkerService {
                 }
             } catch (IOException e) {
                 // 여기서 발생한 IOException은 로그 수집 실패 > job 실패가 아님
-                log.warn("[worker-{}] : 로그 수집 실패", jobId);
+                log.error("[WORKER_LOG][worker-{}] 로그 수집 실패", jobId);
             }
 
             int exitCode = process.waitFor();
             if (exitCode != 0) {
-                log.error("Worker container failed. jobId={}, exitCode={}", jobId, exitCode);
+                log.error("[WORKER_FAIL] jobId={}, exitCode={}", jobId, exitCode);
                 return;
             }
 
-            log.info("Worker container success. jobId={}, exitCode={}", jobId, exitCode);
+            log.debug("[WORKER_DONE] jobId={}, exitCode={}", jobId, exitCode);
             String filePath = fileStorageService.getOutputFilePath(jobId.toString());
             jobService.executionSuccess(jobId, filePath);
             success = true;

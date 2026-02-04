@@ -1,4 +1,9 @@
+# local & ci properties
+
 spring:
+  application:
+    name: orchestrator
+
   datasource:
     url: jdbc:h2:mem:dev-db;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
@@ -13,21 +18,19 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: update   # create / create-drop / update / validate
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        highlight_sql: true
-
-  sql:
-    init:
-      mode: never
+      ddl-auto: create   # update / validate
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        highlight_sql: true
 
 logging:
   level:
     root: INFO
-    orchestrator.service: DEBUG
+    org.springframework: WARN
+    org.hibernate: WARN
+    orchestrator: DEBUG
 
 file:
   volume-path: ${user.dir}/volume

@@ -1,4 +1,4 @@
-package orchestrator.infra.client.request;
+package orchestrator.infra.client.ai_engine.request;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

@@ -7,10 +7,9 @@ import lombok.RequiredArgsConstructor;
 import orchestrator.common.dto.response.JobResponse;
 import orchestrator.common.dto.response.SubmitPromptResponse;
 import orchestrator.common.dto.response.UploadResponse;
-import orchestrator.common.exceptions.BadRequestException;
 import orchestrator.common.exceptions.InternalServerException;
 import orchestrator.domain.job.Job;
-import orchestrator.infra.client.AiClient;
+import orchestrator.infra.client.ai_engine.AiClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,9 +32,8 @@ public class AppService {
     }
 
     public SubmitPromptResponse generateCode(UUID jobId, String prompt) {
-        List<String> fileNames = List.of(jobService.getFileName(jobId));
+        List<String> fileNames = List.of(jobService.getInputFileName(jobId));
         String generatedCode = aiClient.generateCode(fileNames, prompt);
-
         fileStorageService.makePyFile(jobId.toString(), generatedCode);
 
         jobService.setGeneratedCode(jobId, generatedCode);
@@ -44,23 +42,15 @@ public class AppService {
 
     @Transactional(readOnly = true)
     public JobResponse getJobResponse(UUID jobId) {
-        return JobResponse.from(jobService.getJob(jobId));
+        return JobResponse.from(jobService.getOrThrowBadRequest(jobId));
     }
 
     public File getOutputFile(UUID jobId) {
-        Job job = jobService.getJob(jobId);
-
-        if (!job.isFinished()) {
-            throw new BadRequestException("Job is not finished yet.");
-        }
-        if (!job.isSucceeded()) {
-            throw new BadRequestException("Job did not produce output.");
-        }
-
-        File file = fileStorageService.getFile(job.getOutputPath());
+        String outputPath = jobService.getValidOutputPath(jobId);
+        File file = fileStorageService.getFile(outputPath);
 
         if (file == null) {
-            throw new InternalServerException("output 파일이 존재하지 않습니다. path: " + job.getOutputPath());
+            throw new InternalServerException("output 파일이 존재하지 않습니다. path: " + outputPath);
         }
 
         return file;
