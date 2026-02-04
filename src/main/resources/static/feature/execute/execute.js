@@ -49,14 +49,14 @@ export function initExecuteView() {
 
       // ✅ 상태 완료 처리
       if (
-        job.state === JobState.SUCCESS ||
-        job.state === JobState.FAILED
+        job.state === 'SUCCESS' ||
+        job.state === 'FAILED'
       ) {
         stopPolling();
 
-        if (job.state === JobState.SUCCESS) {
+        if (job.state === 'SUCCESS') {
           actionsEl.style.display = 'block';
-          downloadBtn.href = getDownloadUrl(store.jobId);
+          downloadBtn.href = job.outputUrl;
         }
       }
     } catch (e) {
