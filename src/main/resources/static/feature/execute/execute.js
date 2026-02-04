@@ -1,6 +1,7 @@
 // feature/execute/execute.js
 import { store, JobState } from '../../store.js';
 import { executeJob, fetchJobDetail, getDownloadUrl } from './execute.api.js';
+import { formatDateTime, formatDuration } from '../../utils/time.js'
 
 const POLLING_INTERVAL = 2000;
 
@@ -15,6 +16,10 @@ export function initExecuteView() {
   const actionsEl = document.getElementById('execute-actions');
   const downloadBtn = document.getElementById('download-btn');
 
+  const startedAtEl = document.getElementById('started-at');
+  const finishedAtEl = document.getElementById('finished-at');
+  const durationEl = document.getElementById('duration');
+
   jobIdEl.textContent = store.jobId;
 
   async function poll() {
@@ -26,13 +31,30 @@ export function initExecuteView() {
 
       store.jobState = job.state;
 
+      // ✅ start finish 시간 표시
+      if (job.startedAt) {
+        startedAtEl.textContent = formatDateTime(job.startedAt);
+      }
+      if (job.finishedAt) {
+        finishedAtEl.textContent = formatDateTime(job.finishedAt);
+      }
+
+      // ✅ 소요 시간 계산
+      if (job.startedAt && job.finishedAt) {
+        durationEl.textContent = formatDuration(
+          job.startedAt,
+          job.finishedAt
+        );
+      }
+
+      // ✅ 상태 완료 처리
       if (
-        job.state === JobState.EXECUTE_SUCCESS ||
-        job.state === JobState.EXECUTE_FAILED
+        job.state === JobState.SUCCESS ||
+        job.state === JobState.FAILED
       ) {
         stopPolling();
 
-        if (job.state === JobState.EXECUTE_SUCCESS) {
+        if (job.state === JobState.SUCCESS) {
           actionsEl.style.display = 'block';
           downloadBtn.href = getDownloadUrl(store.jobId);
         }
@@ -47,7 +69,7 @@ export function initExecuteView() {
 }
 
 function startPolling(pollFn) {
-  pollFn(); // 즉시 1회 실행
+  pollFn();
   pollingTimer = setInterval(pollFn, POLLING_INTERVAL);
 }
 
